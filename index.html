@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicode字符宇宙🌐 - BetaV0.2.8</title>
+    <style>
+
+
+        /* ========== 原网站样式（完全保留） ========== */
+        *{margin:0;padding:0;box-sizing:border-boxfont-family: Consolas, 'Courier New', Monaco, 'Microsoft YaHei UI', monospace}
+        body{background:#5455ff;color:#fff;padding:15px;line-height:1.5}
+
+        /* 头部区域 */
+        .head{text-align:center;margin-bottom:20px}
+        .logo{width:120px;height:100px;display:inline-block;transform: translate(0, 0);}
+        .page-title{font-size:22px;margin:10px 0;font-weight:normal}
+        .copyright-tip{font-size:14px;opacity:0.9}
+        .copy-guide{font-size:14px;margin-top:5px}
+        .copy-guide a{color:#fff;text-decoration:none}
+        .copy-guide a:hover{text-decoration:underline}
+
+        /* 分区标题 */
+        .section-title{font-size:16px;margin:20px 0 10px 0;color:#fff;padding-left:5px;border-left:3px solid #fff}
+
+        /* 字符网格 - 紧凑高效 */
+        .char-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,60px);
+            gap:2px;
+            margin-bottom:15px;
+        }
+
+        /* 字符项 - 极简渲染 */
+        .char-item{
+            width:60px;
+            height:60px;
+            background:#fff;
+            color:#333;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            border:1px solid #ddd;
+            font-size:16px;
+            cursor:default;
+        }
+
+        /* 编码显示 */
+        .char-code{
+            font-size:10px;
+            color:#4fc3f7;
+            margin-top:3px;
+        }
+
+        /* 加载提示 */
+        .loading{text-align:center;padding:20px;color:#fff;opacity:0.8}
+        
+        /* 链接按钮样式 - 与页面风格统一 */
+        .link-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px 3px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .link-btn:hover {
+            background: rgba(255,255,255,0.3);
+            text-decoration: none;
+        }
+        .btn-group {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        /* 时间显示器样式 */
+        .time-display {
+            text-align: center;
+            font-size: 16px;
+            color: #ffffff;
+            margin: 15px 0;
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* 温馨提示圆角框样式 */
+        .tip-box {
+            border: 2px solid #ffffff;       
+            border-radius: 15px;             
+            padding: 12px 18px;              
+            margin: 18px 0;                 
+            background-color: rgba(255, 255, 255, 0.5); 
+            font-size: 16px;
+            line-height: 1.7;               
+            text-align: center;            
+        }
+
+        /* ========== 新增：谷谷GIS地球样式（极简，无多余逻辑） ========== */
+        .gggis-container {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+        }
+        .gggis-title {
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 8px;
+        }
+        .gggis-earth {
+            height: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .gggis-earth iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .gggis-tip {
+            text-align: center;
+            font-size: 14px;
+            color: #ccc;
+            margin-top: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- ========== 原网站头部（完全保留） ========== -->
+    <div class="head">
+        <svg class="logo" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0,0,88.82,75.15">
+            <g transform="translate(-196.1,-142.66)">
+                <g fill="#e8e8e8">
+                    <path d="M197.08,195.02l-0.18-48.53h14.37l-0.24,35.86l21.9,-0.07l0.11,-35.79h14.37l-0.54,48.34z"/>
+                    <path d="M270.68,190.97l-34.23-34.39l10.16-10.16l33.8,34.57z"/>
+                    <path d="M268.59,195.57l0.11-38.25h14.37l-0.54,38.11z"/>
+                    <path d="M270.05,148.43a5.76,5.76 0 1,1,11.52,0a5.76,5.76 0 1,1-11.52,0"/>
+                    <text transform="translate(196.35,211.57) scale(0.5)" font-size="40" fill="#e8e8e8">unicode_</text>
+                </g>
+            </g>
+        </svg>
+        <div class="page-title">Ʉ₦ł₵ØĐɆ_₴Ɏ₥฿Ⱡ - 字符宇宙🌐+谷谷GIS地球在线-正式版本V0.2.8</></div>
+        <div style="margin:8px 0; font-size:14px; color:#ffffff; line-height:1.6;">
+            <div>𝒜𝒮𝒞𝐿𝐿区官方PDF📗：<a href="https://www.unicode.org/charts/PDF/U0000.pdf/" target="_blank" style="color:#4fc3f7; text-decoration:none;">https://www.unicode.org/charts/PDF/U0000.pdf/</a></div>
+            <div>𝒰𝓃𝒾𝒸𝑜𝒹𝑒区官方PDF📘：<a href="https://www.unicode.org/charts/PDF/" target="_blank" style="color:#4fc3f7; text-decoration:none;">https://www.unicode.org/charts/PDF/</a></div>
+        </div>
+        <div class="copyright-tip">由海南信奥网用户zyw1开发。制作不易，还望给个硬币🪙。本网站没有cookie🍪。 </div>
+        <div class="copy-guide">♔◣我是古希腊掌管符号的神♌☠</div>
+        <div class="copy-guide">꧁༺ 符号之神 ༻꧂的感叹：除了unicode上帝的PDF📃以外，没有其他人能成功的1:1还原所有符号的形态💎。</div>
+        <div>𝒰𝓃𝒾𝒸𝑜𝒹𝑒官方📰：<a href="https://www.unicode.org/charts/" target="_blank" style="color:#4fc3f7; text-decoration:none;">https://www.unicode.org/charts/</a></div>
+        <div class="tip-box">温馨提示：网站🏦上的表情符号👌和符号Ⅱ的所有图像📳均仅供参考，权利属于作者🤴，未经作者🤴许可，不得用于其它🏛目的。所有符号名称均为官方 Unicode® 名称🎫。 列出的代码点是 Unicode🛜标准的一部分。© Unicode_Symbl 2026﴾✨﴿</div>
+    </div>
+
+    <!-- 时间显示器 -->
+    <div id="time-display" class="time-display"></div>
+
+    <!-- 链接按钮组 -->
+    <div class="btn-group">
+        <a href="https://www.unicode.org/charts/" target="_blank" class="link-btn">Unicode官方图表📊</a>
+        <a href="https://www.unicode.org/versions/latest/" target="_blank" class="link-btn">最新Unicode版本📖</a>
+        <a href="https://www.unicode.org/versions/Unicode18.0.0/" target="_blank" class="link-btn">18.0.0Unicode版本（草稿）📖</a>
+        <a href="https://www.unicode.org/Public/UCD/latest/ucd/" target="_blank" class="link-btn">UCD数据文件📁</a>
+        <a href="https://www.unicode.org/emoji/charts/full-emoji-list.html" target="_blank" class="link-btn">Emoji全表😜</a>
+	<a href="https://www.gggis.com"_blank" class="link-btn">谷歌地球大陆版下载链接🌎</a>
+        <a href="https://www.bilibili.com/video/BV1EN4y1V7MB/?spm_id_from=333.337.search-card.all.click" target="_blank" class="link-btn">恶搞链接💩</a>
+<a href="https://www.unicode.org/copyright.html" target="_blank" class="link-btn">相关条款📰√</a>
+        </div>
+
+    <!-- ========== 新增：谷谷GIS地球（自带街景，无需额外导入） ========== -->
+    <div class="gggis-container">
+        <div class="gggis-title">🌍 谷谷GIS地球在线（内置百度/谷歌街景，直接使用）</div>
+        <div class="gggis-earth">
+            <iframe src="https://earth.gggis.com"></iframe>
+        </div>
+        <div class="gggis-tip">使用提示：在地球内右键/点击图层按钮，可直接切换百度街景/谷歌街景 🚀</div>
+    </div>
+
+    <!-- ========== 原网站字符网格区域（完全保留） ========== -->
+    <div class="section-title">普通ASCII区🎸▷：</div>
+    <div id="ascii-grid" class="char-grid"></div>
+    
+    <div class="section-title">正常UNICODE区🪉▷：</div>
+    <div id="unicode-grid" class="char-grid"></div>
+    
+    <div class="section-title">部分私人区🪗▷：</div>
+    <div id="private-grid" class="char-grid"></div>
+    
+    <div class="section-title">剩余Unicode区+大量私人区🎻▷：</div>
+    <div id="rest-grid" class="char-grid"></div>
+    
+    <div id="loading" class="loading">加载中...🔄</div>
+    <div class="tip-box">如果你现在正在安稳的阅读这段文字，那么恭喜你成功把Unicode17.0.0代码表完整的加载出来了。</div>
+
+    <script>
+        // ========== 原网站JS（完全保留，无任何新增逻辑） ==========
+        // 节日配置
+        const festivalConfig = {
+            national: ["01-01","05-01","06-01","10-01","12-25"],
+            traditional: ["01-15","05-05","08-15","09-09"]
+        };
+
+        // 获取当前日期（月-日）
+        function getCurrentDateStr() {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${month}-${day}`;
+        }
+
+        // 获取节日标识
+        function getFestivalIcon() {
+            const dateStr = getCurrentDateStr();
+            if (festivalConfig.national.includes(dateStr)) return "🌐";
+            if (festivalConfig.traditional.includes(dateStr)) return "🚩";
+            return "";
+        }
+
+        // 更新时间显示
+        function updateTimeDisplay() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hour = String(now.getHours()).padStart(2, '0');
+            const minute = String(now.getMinutes()).padStart(2, '0');
+            const second = String(now.getSeconds()).padStart(2, '0');
+            const festivalIcon = getFestivalIcon();
+            const timeText = `${year}-${month}-${day} ${hour}:${minute}:${second} ${festivalIcon}`;
+            document.getElementById('time-display').textContent = timeText;
+        }
+
+        // 控制字符缩写
+        const controlCharAbbr = {
+            0x0000:"┋NUL┋",0x0001:"┋SOH┋",0x0002:"┋STX┋",0x0003:"┋ETX┋",0x0004:"┋EOT┋",
+            0x0005:"┋ENQ┋",0x0006:"┋ACK┋",0x0007:"┋BEL┋",0x0008:"┋BS┋", 0x0009:"┋TAB┋",
+            0x000A:"┋LF┋", 0x000B:"┋VT┋", 0x000C:"┋FF┋", 0x000D:"┋CR┋", 0x000E:"┋SO┋",
+            0x000F:"┋SI┋", 0x0010:"┋DLE┋",0x0011:"┋DC1┋",0x0012:"┋DC2┋",0x0013:"┋DC3┋",
+            0x0014:"┋DC4┋",0x0015:"┋NAK┋",0x0016:"┋SYN┋",0x0017:"┋ETB┋",0x0018:"┋CAN┋",
+            0x0019:"┋EM┋", 0x001A:"┋SUB┋",0x001B:"┋ESC┋",0x001C:"┋FS┋", 0x001D:"┋GS┋",
+            0x001E:"┋RS┋", 0x001F:"┋US┋", 0x0020:"┋SPA┋",0x007F:"┋0┋",
+            0x0080:"┋PAD┋",0x0081:"┋HOP┋",0x0082:"┋BPH┋",0x0083:"┋NBH┋",0x0084:"┋IND┋",
+            0x0085:"┋NEL┋",0x0086:"┋SSA┋",0x0087:"┋ESA┋",0x0088:"┋HTS┋",0x0089:"┋HTJ┋",
+            0x008A:"┋VTS┋",0x008B:"┋PLD┋",0x008C:"┋PLU┋",0x008D:"┋RI┋", 0x008E:"┋SS2┋",
+            0x008F:"┋SS3┋",0x0090:"┋DCS┋",0x0091:"┋PU1┋",0x0092:"┋PU2┋",0x0093:"┋STS┋",
+            0x0094:"┋CCH┋",0x0095:"┋MW┋", 0x0096:"┋SPA┋",0x0097:"┋EPA┋",0x0098:"┋SOS┋",
+            0x0099:"┋SGCI┋",0x009A:"┋SCI┋",0x009B:"┋CSI┋",0x009C:"┋ST┋", 0x009D:"┋OSC┋",
+            0x009E:"┋PM┋", 0x009F:"┋APC┋" ,0x00A0:"┋NBS┋" ,0x10FFFC:"┋OBJ┋"
+        };
+
+        // 加载配置
+        const CONFIG = {
+            batchSize: 500,
+            currentCode: 0,
+            maxCode: 0x10FFFF,
+            isLoading: false
+        };
+
+        // 获取字符网格容器ID
+        function getContainerId(code) {
+            if(code>=0x0000 && code<=0x007F) return "ascii-grid";
+            if(code>=0x0080 && code<=0xE000) return "unicode-grid";
+            if(code>=0xE000 && code<=0xF8FF) return "private-grid";
+            return "rest-grid";
+        }
+
+        // 创建字符项
+        function createCharItem(code) {
+            const el = document.createElement("div");
+            el.className = "char-item";
+
+            const isCtrl = 
+                (code >= 0x0000 && code <= 0x0020) ||
+                (code >= 0x0080 && code <= 0x00A0) ||
+		(code === 0x007F && code === 0x10FFFC);
+
+            let show;
+            if (isCtrl) {
+                show = controlCharAbbr[code];
+            } else {
+                show = String.fromCodePoint(code);
+            }
+
+            const hex = code.toString(16).padStart(4, '0').toUpperCase();
+            el.innerHTML = `${show}<span class="char-code">U+${hex}</span>`;
+            return el;
+        }
+
+        // 批量加载字符
+        function loadBatch() {
+            if (CONFIG.isLoading || CONFIG.currentCode > CONFIG.maxCode) return;
+            CONFIG.isLoading = true;
+
+            const end = Math.min(CONFIG.currentCode + CONFIG.batchSize - 1, CONFIG.maxCode);
+            for (let c = CONFIG.currentCode; c <= end; c++) {
+                document.getElementById(getContainerId(c)).appendChild(createCharItem(c));
+            }
+
+            if (CONFIG.currentCode >= CONFIG.maxCode) {
+                document.getElementById('loading').style.display = 'none';
+            }
+
+            CONFIG.currentCode = end + 1;
+            CONFIG.isLoading = false;
+        }
+
+        // 滚动加载
+        window.addEventListener("scroll", () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                loadBatch();
+            }
+        });
+
+
+        // 初始化
+        updateTimeDisplay();
+        setInterval(updateTimeDisplay, 1000);
+        loadBatch();
+    </script>
+</body>
+</html>
