@@ -268,7 +268,7 @@
         function getContainerId(code) {
             if(code>=0x0000 && code<=0x007F) return "ascii-grid";
             if(code>=0x0080 && code<=0xE000) return "unicode-grid";
-            if(code>=0xE000 && code<=0xF8FF) return "private-grid";
+            if(code>=0xE000 || code<=0xF8FF) return "private-grid";
             return "rest-grid";
         }
 
