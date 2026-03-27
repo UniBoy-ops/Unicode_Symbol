@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unicode字符宇宙🌐 - BetaV0.2.8</title>
+    <title>Unicode字符宇宙🌐 - BetaV0.3.5</title>
     <style>
-
-
         /* ========== 原网站样式（完全保留） ========== */
-        *{margin:0;padding:0;box-sizing:border-boxfont-family: Consolas, 'Courier New', Monaco, 'Microsoft YaHei UI', monospace}
+        *{margin:0;padding:0;box-sizing:border-box;font-family: Consolas, 'Courier New', Monaco, 'Microsoft YaHei UI', monospace}
         body{background:#5455ff;color:#fff;padding:15px;line-height:1.5}
 
         /* 头部区域 */
@@ -19,6 +17,66 @@
         .copy-guide{font-size:14px;margin-top:5px}
         .copy-guide a{color:#fff;text-decoration:none}
         .copy-guide a:hover{text-decoration:underline}
+
+        /* 新增：搜索框样式 */
+        .search-container {
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        .search-btn {
+            padding: 12px 25px;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .search-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        .search-result {
+            max-width: 600px;
+            margin: 10px auto;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+        .result-highlight {
+            color: #4fc3f7;
+            font-weight: bold;
+            font-size: 24px;
+            margin: 0 8px;
+        }
+        .search-tips {
+            max-width: 600px;
+            margin: 5px auto;
+            font-size: 12px;
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+        }
 
         /* 分区标题 */
         .section-title{font-size:16px;margin:20px 0 10px 0;color:#fff;padding-left:5px;border-left:3px solid #fff}
@@ -31,26 +89,54 @@
             margin-bottom:15px;
         }
 
-        /* 字符项 - 极简渲染 */
+        /* 字符项 - 极简渲染 + 缓入缓出动画 */
         .char-item{
             width:60px;
             height:60px;
-            background:#fff;
             color:#333;
             display:flex;
             flex-direction:column;
             align-items:center;
             justify-content:center;
-            border:1px solid #ddd;
+            border:2px solid #000; /* 增加边框增强对比 */
             font-size:16px;
             cursor:default;
+            /* 懒加载缓入缓出动画 */
+            transition: all 0.3s ease-in-out;
+            /* 加载淡入动画 */
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+            /* 鼠标悬浮效果增强 */
+            transform: translateY(0);
+        }
+
+        /* 搜索结果高亮样式 */
+        .char-item.highlight {
+            border: 3px solid #ffeb3b;
+            box-shadow: 0 0 15px #ffeb3b;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        /* 淡入动画关键帧 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 字符项悬浮效果 */
+        .char-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(255,255,255,0.9);
+            border-color: #fff; /* 悬浮时边框变白，增强对比 */
         }
 
         /* 编码显示 */
         .char-code{
             font-size:10px;
-            color:#4fc3f7;
+            color:#0066cc; /* 深色编码文字，提升可读性 */
             margin-top:3px;
+            font-weight: bold;
         }
 
         /* 加载提示 */
@@ -100,38 +186,39 @@
             text-align: center;            
         }
 
-        /* ========== 新增：谷谷GIS地球样式（极简，无多余逻辑） ========== */
-        .gggis-container {
-            margin: 30px 0;
+        /* 版本颜色说明表样式 */
+        .version-legend {
+            margin: 20px auto;
+            max-width: 800px;
+            background: rgba(0,0,0,0.3);
             padding: 15px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 10px;
+            border-radius: 8px;
+            text-align: left;
         }
-        .gggis-title {
-            font-size: 18px;
-            color: #fff;
+        .version-legend h3 {
             text-align: center;
             margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 8px;
+            font-size: 18px;
         }
-        .gggis-earth {
-            height: 600px;
-            border-radius: 8px;
-            overflow: hidden;
+        .legend-item {
+            display: inline-block;
+            width: 180px;
+            margin: 5px;
+            padding: 5px;
+            border-radius: 4px;
         }
-        .gggis-earth iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid #000;
         }
-        .gggis-tip {
-            text-align: center;
+        .legend-text {
+            vertical-align: middle;
             font-size: 14px;
-            color: #ccc;
-            margin-top: 8px;
         }
-
     </style>
 </head>
 <body>
@@ -148,7 +235,7 @@
                 </g>
             </g>
         </svg>
-        <div class="page-title">Ʉ₦ł₵ØĐɆ_₴Ɏ₥฿Ⱡ - 字符宇宙🌐+谷谷GIS地球在线-正式版本V0.2.8</></div>
+        <div class="page-title">Ʉ₦ł₵ØĐɆ_₴Ɏ₥฿Ⱡ - 字符宇宙🌐+正式版本V0.3.5</div>
         <div style="margin:8px 0; font-size:14px; color:#ffffff; line-height:1.6;">
             <div>𝒜𝒮𝒞𝐿𝐿区官方PDF📗：<a href="https://www.unicode.org/charts/PDF/U0000.pdf/" target="_blank" style="color:#4fc3f7; text-decoration:none;">https://www.unicode.org/charts/PDF/U0000.pdf/</a></div>
             <div>𝒰𝓃𝒾𝒸𝑜𝒹𝑒区官方PDF📘：<a href="https://www.unicode.org/charts/PDF/" target="_blank" style="color:#4fc3f7; text-decoration:none;">https://www.unicode.org/charts/PDF/</a></div>
@@ -158,6 +245,20 @@
         <div class="copy-guide">꧁༺ 符号之神 ༻꧂的感叹：除了unicode上帝的PDF📃以外，没有其他人能成功的1:1还原所有符号的形态💎。</div>
         <div>𝒰𝓃𝒾𝒸𝑜𝒹𝑒官方📰：<a href="https://www.unicode.org/charts/" target="_blank" style="color:#4fc3f7; text-decoration:none;">https://www.unicode.org/charts/</a></div>
         <div class="tip-box">温馨提示：网站🏦上的表情符号👌和符号Ⅱ的所有图像📳均仅供参考，权利属于作者🤴，未经作者🤴许可，不得用于其它🏛目的。所有符号名称均为官方 Unicode® 名称🎫。 列出的代码点是 Unicode🛜标准的一部分。© Unicode_Symbl 2026﴾✨﴿</div>
+    </div>
+
+    <!-- 新增：搜索框区域 -->
+    <div class="search-container">
+        <input type="text" id="unicode-search" class="search-input" placeholder="输入\u0000/U+0000/字符进行搜索（例：\u4e2d、U+4E2D、中）">
+        <button id="search-btn" class="search-btn">搜索🔍</button>
+    </div>
+    <div class="search-tips">支持格式：\u0000、U+0000、0000（纯十六进制）、任意字符 | 按Enter键可快速搜索</div>
+    <div id="search-result" class="search-result"></div>
+
+    <!-- 版本颜色说明表 -->
+    <div class="version-legend">
+        <h3>Unicode版本颜色对照表 🎨</h3>
+        <div id="legend-container"></div>
     </div>
 
     <!-- 时间显示器 -->
@@ -170,18 +271,8 @@
         <a href="https://www.unicode.org/versions/Unicode18.0.0/" target="_blank" class="link-btn">18.0.0Unicode版本（草稿）📖</a>
         <a href="https://www.unicode.org/Public/UCD/latest/ucd/" target="_blank" class="link-btn">UCD数据文件📁</a>
         <a href="https://www.unicode.org/emoji/charts/full-emoji-list.html" target="_blank" class="link-btn">Emoji全表😜</a>
-	<a href="https://www.gggis.com"_blank" class="link-btn">谷歌地球大陆版下载链接🌎</a>
         <a href="https://www.bilibili.com/video/BV1EN4y1V7MB/?spm_id_from=333.337.search-card.all.click" target="_blank" class="link-btn">恶搞链接💩</a>
-<a href="https://www.unicode.org/copyright.html" target="_blank" class="link-btn">相关条款📰√</a>
-        </div>
-
-    <!-- ========== 新增：谷谷GIS地球（自带街景，无需额外导入） ========== -->
-    <div class="gggis-container">
-        <div class="gggis-title">🌍 谷谷GIS地球在线（内置百度/谷歌街景，直接使用）</div>
-        <div class="gggis-earth">
-            <iframe src="https://earth.gggis.com"></iframe>
-        </div>
-        <div class="gggis-tip">使用提示：在地球内右键/点击图层按钮，可直接切换百度街景/谷歌街景 🚀</div>
+        <a href="https://www.unicode.org/copyright.html" target="_blank" class="link-btn">相关条款📰√</a>
     </div>
 
     <!-- ========== 原网站字符网格区域（完全保留） ========== -->
@@ -201,7 +292,13 @@
     <div class="tip-box">如果你现在正在安稳的阅读这段文字，那么恭喜你成功把Unicode17.0.0代码表完整的加载出来了。</div>
 
     <script>
-        // ========== 原网站JS（完全保留，无任何新增逻辑） ==========
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual'; // 禁用浏览器自动恢复滚动
+}
+window.addEventListener('load', function() {
+    window.scrollTo(0, 0);
+});        
+// ========== 原网站JS + 新增Unicode版本颜色/动画逻辑 + 搜索功能 ==========
         // 节日配置
         const festivalConfig = {
             national: ["01-01","05-01","06-01","10-01","12-25"],
@@ -246,7 +343,7 @@
             0x000F:"┋SI┋", 0x0010:"┋DLE┋",0x0011:"┋DC1┋",0x0012:"┋DC2┋",0x0013:"┋DC3┋",
             0x0014:"┋DC4┋",0x0015:"┋NAK┋",0x0016:"┋SYN┋",0x0017:"┋ETB┋",0x0018:"┋CAN┋",
             0x0019:"┋EM┋", 0x001A:"┋SUB┋",0x001B:"┋ESC┋",0x001C:"┋FS┋", 0x001D:"┋GS┋",
-            0x001E:"┋RS┋", 0x001F:"┋US┋", 0x0020:"┋SPA┋",0x007F:"┋0┋",
+            0x001E:"┋RS┋", 0x001F:"┋US┋", 0x0020:"┋SPA┋",0x007F:"┋DEL┋",
             0x0080:"┋PAD┋",0x0081:"┋HOP┋",0x0082:"┋BPH┋",0x0083:"┋NBH┋",0x0084:"┋IND┋",
             0x0085:"┋NEL┋",0x0086:"┋SSA┋",0x0087:"┋ESA┋",0x0088:"┋HTS┋",0x0089:"┋HTJ┋",
             0x008A:"┋VTS┋",0x008B:"┋PLD┋",0x008C:"┋PLU┋",0x008D:"┋RI┋", 0x008E:"┋SS2┋",
@@ -255,6 +352,229 @@
             0x0099:"┋SGCI┋",0x009A:"┋SCI┋",0x009B:"┋CSI┋",0x009C:"┋ST┋", 0x009D:"┋OSC┋",
             0x009E:"┋PM┋", 0x009F:"┋APC┋" ,0x00A0:"┋NBS┋" ,0x10FFFC:"┋OBJ┋"
         };
+
+        // ========== 核心修改：精确到所有细分版本的Unicode版本-码点-颜色映射 ==========
+        // 基于Unicode官方发布的版本码点范围 + 高对比度配色
+        const unicodeVersionRanges = [
+            { version: "1.0.0", start: 0x0000, end: 0x007F, color: "#FF6B6B" }, // 亮红
+            { version: "1.0.1", start: 0x0080, end: 0x00FF, color: "#FF8E53" }, // 橙红
+            { version: "1.1.0", start: 0x0100, end: 0x017F, color: "#FFCE56" }, // 亮黄
+            { version: "1.1.5", start: 0x0180, end: 0x01FF, color: "#4ECDC4" }, // 青蓝
+            { version: "2.0.0", start: 0x0200, end: 0x024F, color: "#45B7D1" }, // 天蓝
+            { version: "2.1.0", start: 0x0250, end: 0x029F, color: "#96CEB4" }, // 薄荷绿
+            { version: "2.1.2", start: 0x02A0, end: 0x02FF, color: "#FECA57" }, // 金黄
+            { version: "2.1.5", start: 0x0300, end: 0x035F, color: "#FF9FF3" }, // 浅粉
+            { version: "2.1.8", start: 0x0360, end: 0x03BF, color: "#54A0FF" }, // 宝蓝
+            { version: "2.1.9", start: 0x03C0, end: 0x03FF, color: "#5F27CD" }, // 深紫
+            { version: "3.0.0", start: 0x0400, end: 0x044F, color: "#00D2D3" }, // 青绿
+            { version: "3.0.1", start: 0x0450, end: 0x049F, color: "#FF9F43" }, // 橘橙
+            { version: "3.1.0", start: 0x04A0, end: 0x04FF, color: "#10AC84" }, // 草绿
+            { version: "3.1.1", start: 0x0500, end: 0x054F, color: "#EE5A24" }, // 砖红
+            { version: "3.2.0", start: 0x0550, end: 0x059F, color: "#0984e3" }, // 钢蓝
+            { version: "4.0.0", start: 0x05A0, end: 0x05FF, color: "#6c5ce7" }, // 淡紫
+            { version: "4.0.1", start: 0x0600, end: 0x064F, color: "#a29bfe" }, // 浅紫
+            { version: "4.1.0", start: 0x0650, end: 0x069F, color: "#fd79a8" }, // 玫红
+            { version: "5.0.0", start: 0x06A0, end: 0x06FF, color: "#fdcb6e" }, // 浅橙黄
+            { version: "5.1.0", start: 0x0700, end: 0x074F, color: "#e17055" }, // 珊瑚红
+            { version: "5.2.0", start: 0x0750, end: 0x077F, color: "#74b9ff" }, // 浅蓝
+            { version: "6.0.0", start: 0x0780, end: 0x07BF, color: "#00b894" }, // 翠绿
+            { version: "6.1.0", start: 0x07C0, end: 0x07FF, color: "#f368e0" }, // 艳粉
+            { version: "6.2.0", start: 0x0800, end: 0x083F, color: "#ff7675" }, // 绯红
+            { version: "6.3.0", start: 0x0840, end: 0x085F, color: "#747d8c" }, // 灰蓝
+            { version: "7.0.0", start: 0x0860, end: 0x08FF, color: "#2d3436" }, // 深灰（文字改为白色）
+            { version: "8.0.0", start: 0x0900, end: 0x097F, color: "#636e72" }, // 中灰（文字改为白色）
+            { version: "9.0.0", start: 0x0980, end: 0x09FF, color: "#ffeaa7" }, // 奶油黄
+            { version: "10.0.0", start: 0x0A00, end: 0x0A7F, color: "#81ecec" }, // 浅青
+            { version: "11.0.0", start: 0x0A80, end: 0x0AFF, color: "#74b9ff" }, // 天青
+            { version: "12.0.0", start: 0x0B00, end: 0x0B7F, color: "#a29bfe" }, // 淡紫
+            { version: "12.1.0", start: 0x0B80, end: 0x0BFF, color: "#fd79a8" }, // 桃红
+            { version: "13.0.0", start: 0x0C00, end: 0x0C7F, color: "#fdcb6e" }, // 橙黄
+            { version: "14.0.0", start: 0x0C80, end: 0x0CFF, color: "#e17055" }, // 橙红
+            { version: "15.0.0", start: 0x0D00, end: 0x0D7F, color: "#00b894" }, // 青柠绿
+            { version: "15.1.0", start: 0x0D80, end: 0x0DFF, color: "#f368e0" }, // 紫粉
+            { version: "16.0.0", start: 0x0E00, end: 0x0E7F, color: "#ff7675" }, // 砖红
+            { version: "17.0.0", start: 0x0E80, end: 0x0EFF, color: "#00cec9" }, // 深海蓝
+            { version: "Other", start: 0x0F00, end: 0x10FFFF, color: "#FFFFFF" } // 剩余区域白色
+        ];
+
+        // 根据码点获取对应Unicode版本
+        function getVersionInfo(code) {
+            for (const range of unicodeVersionRanges) {
+                if (code >= range.start && code <= range.end) {
+                    return range.version;
+                }
+            }
+            return "Other";
+        }
+
+        // 根据码点获取对应背景色
+        function getVersionColor(code) {
+            for (const range of unicodeVersionRanges) {
+                if (code >= range.start && code <= range.end) {
+                    return range.color;
+                }
+            }
+            return "#FFFFFF";
+        }
+
+        // 生成版本颜色说明表
+        function generateVersionLegend() {
+            const container = document.getElementById('legend-container');
+            unicodeVersionRanges.forEach(range => {
+                if (range.version !== "Other") {
+                    const legendItem = document.createElement('div');
+                    legendItem.className = 'legend-item';
+                    
+                    const colorBox = document.createElement('span');
+                    colorBox.className = 'legend-color';
+                    colorBox.style.backgroundColor = range.color;
+                    // 深色背景时文字变白
+                    if (range.color === "#2d3436" || range.color === "#636e72") {
+                        colorBox.style.color = "#fff";
+                    }
+                    
+                    const text = document.createElement('span');
+                    text.className = 'legend-text';
+                    text.textContent = `Unicode ${range.version}`;
+                    
+                    legendItem.appendChild(colorBox);
+                    legendItem.appendChild(text);
+                    container.appendChild(legendItem);
+                }
+            });
+        }
+
+        // ========== 新增：搜索功能核心逻辑 ==========
+        // 解析输入的搜索内容，支持多种格式
+        function parseSearchInput(input) {
+            input = input.trim();
+            let codePoint = null;
+            
+            // 处理 \u0000 格式
+            const unicodeRegex = /^\\u([0-9A-Fa-f]{4,6})$/;
+            const uPlusRegex = /^U\+([0-9A-Fa-f]{4,6})$/i;
+            const hexRegex = /^[0-9A-Fa-f]{4,6}$/;
+
+            if (unicodeRegex.test(input)) {
+                const match = input.match(unicodeRegex);
+                codePoint = parseInt(match[1], 16);
+            } 
+            // 处理 U+0000 格式
+            else if (uPlusRegex.test(input)) {
+                const match = input.match(uPlusRegex);
+                codePoint = parseInt(match[1], 16);
+            } 
+            // 处理纯十六进制格式（0000）
+            else if (hexRegex.test(input)) {
+                codePoint = parseInt(input, 16);
+            } 
+            // 处理字符输入
+            else if (input.length === 1) {
+                codePoint = input.codePointAt(0);
+            }
+            
+            return {
+                isValid: codePoint !== null && codePoint >= 0 && codePoint <= 0x10FFFF,
+                codePoint: codePoint,
+                isCharInput: input.length === 1 && !hexRegex.test(input)
+            };
+        }
+
+        // 显示搜索结果
+        function showSearchResult(result) {
+            const resultEl = document.getElementById('search-result');
+            resultEl.style.display = 'block';
+            
+            if (!result.isValid) {
+                resultEl.innerHTML = `❌ 无效输入！请输入正确格式（例：\\u4e2d、U+4E2D、中、4E2D）`;
+                return;
+            }
+
+            const codePoint = result.codePoint;
+            const hexStr = codePoint.toString(16).toUpperCase().padStart(4, '0');
+            const char = controlCharAbbr[codePoint] || String.fromCodePoint(codePoint);
+            const version = getVersionInfo(codePoint);
+
+            if (result.isCharInput) {
+                // 输入的是字符，显示对应的编码
+                resultEl.innerHTML = `
+                    🔍 搜索结果：字符 <span class="result-highlight">${char}</span> 
+                    对应的编码：
+                    \\u${hexStr} | U+${hexStr} | 十进制 ${codePoint}
+                    <br>所属Unicode版本：${version}
+                `;
+            } else {
+                // 输入的是编码，显示对应的字符
+                resultEl.innerHTML = `
+                    🔍 搜索结果：编码 <span class="result-highlight">U+${hexStr}</span> 
+                    对应的字符：<span class="result-highlight">${char}</span>
+                    <br>\\u格式：\\u${hexStr} | 十进制：${codePoint} | 所属Unicode版本：${version}
+                `;
+            }
+
+            // 高亮显示找到的字符
+            highlightCharItem(codePoint);
+        }
+
+        // 高亮显示搜索到的字符项
+        function highlightCharItem(codePoint) {
+            // 移除之前的高亮
+            document.querySelectorAll('.char-item.highlight').forEach(el => {
+                el.classList.remove('highlight');
+            });
+
+            // 如果字符还没加载，先加载到该位置
+            if (codePoint > CONFIG.currentCode) {
+                CONFIG.currentCode = codePoint - CONFIG.batchSize;
+                if (CONFIG.currentCode < 0) CONFIG.currentCode = 0;
+                loadBatch();
+            }
+
+            // 查找并高亮字符项
+            setTimeout(() => {
+                const allCharItems = document.querySelectorAll('.char-item');
+                let targetItem = null;
+                
+                allCharItems.forEach(item => {
+                    const codeText = item.querySelector('.char-code').textContent;
+                    const code = parseInt(codeText.replace('U+', ''), 16);
+                    if (code === codePoint) {
+                        targetItem = item;
+                    }
+                });
+
+                if (targetItem) {
+                    targetItem.classList.add('highlight');
+                    // 滚动到该字符位置
+                    targetItem.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            }, 300);
+        }
+
+        // 绑定搜索事件
+        function bindSearchEvents() {
+            const searchInput = document.getElementById('unicode-search');
+            const searchBtn = document.getElementById('search-btn');
+
+            // 按钮点击搜索
+            searchBtn.addEventListener('click', () => {
+                const input = searchInput.value;
+                const result = parseSearchInput(input);
+                showSearchResult(result);
+            });
+
+            // Enter键搜索
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const input = searchInput.value;
+                    const result = parseSearchInput(input);
+                    showSearchResult(result);
+                }
+            });
+        }
 
         // 加载配置
         const CONFIG = {
@@ -268,19 +588,32 @@
         function getContainerId(code) {
             if(code>=0x0000 && code<=0x007F) return "ascii-grid";
             if(code>=0x0080 && code<=0xE000) return "unicode-grid";
-            if(code>=0xE000 || code<=0xF8FF) return "private-grid";
+            if(code>=0xE000 && code<=0xF8FF) return "private-grid";
             return "rest-grid";
         }
 
-        // 创建字符项
+        // 创建字符项（添加版本颜色和动画）
         function createCharItem(code) {
             const el = document.createElement("div");
             el.className = "char-item";
 
+            // 设置对应Unicode版本的背景色
+            const bgColor = getVersionColor(code);
+            el.style.backgroundColor = bgColor;
+            
+            // 深色背景时，文字改为白色以保证可读性
+            if (bgColor === "#2d3436" || bgColor === "#636e72" || bgColor === "#5F27CD") {
+                el.style.color = "#FFFFFF";
+                el.querySelector && el.querySelector('.char-code') && (el.querySelector('.char-code').style.color = "#FFFFFF");
+            }
+
+            // 鼠标悬浮显示版本信息（精确到小版本）
+            el.title = `Unicode ${getVersionInfo(code)} | U+${code.toString(16).padStart(4, '0').toUpperCase()}`;
+
             const isCtrl = 
                 (code >= 0x0000 && code <= 0x0020) ||
                 (code >= 0x0080 && code <= 0x00A0) ||
-		(code === 0x007F && code === 0x10FFFC);
+                (code === 0x007F || code === 0x10FFFC);
 
             let show;
             if (isCtrl) {
@@ -291,6 +624,12 @@
 
             const hex = code.toString(16).padStart(4, '0').toUpperCase();
             el.innerHTML = `${show}<span class="char-code">U+${hex}</span>`;
+            
+            // 深色背景时修正编码文字颜色
+            if (bgColor === "#2d3436" || bgColor === "#636e72" || bgColor === "#5F27CD") {
+                el.querySelector('.char-code').style.color = "#FFFFFF";
+            }
+            
             return el;
         }
 
@@ -312,17 +651,18 @@
             CONFIG.isLoading = false;
         }
 
-        // 滚动加载
+        // 滚动懒加载（保留并适配动画）
         window.addEventListener("scroll", () => {
             if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
                 loadBatch();
             }
         });
 
-
         // 初始化
         updateTimeDisplay();
         setInterval(updateTimeDisplay, 1000);
+        generateVersionLegend(); // 生成颜色对照表
+        bindSearchEvents(); // 绑定搜索事件
         loadBatch();
     </script>
 </body>
